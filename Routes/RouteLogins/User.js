@@ -331,22 +331,25 @@ router.get('/getpatient', async (req, res) => {
   }
 });
 
-//add doctor  details
+
+// saaji
+
 router.post('/doctorpersnoldetails', upload.single('image'), async (req, res) => {
   try {
     const { body, file, verification } = req;
-    console.log("body", body)
-    const { email } = body.email
+    console.log("body", body);
+    const email = body.email; // Corrected this line
+    
     const doctordetail = await doctordetails.find({ email });
-
+   
     if (doctordetail.length > 0) {
       return res.status(200).json({ message: 'Doctor is already registered!' });
     }
+    
     // Create a new doctordetails instance with the received data
     const newDoctorDetails = new pendingdoctors({
       image: file ? file.path : null, 
-      image: verification ? verification.path : null, 
-      name: body.name,
+      username: body.username,
       email: body.email,
       password: body.password,
       specialization: body.specialization,
@@ -386,8 +389,64 @@ router.post('/doctorpersnoldetails', upload.single('image'), async (req, res) =>
     console.error('Error during registration:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
-
 });
+//add doctor  details
+// router.post('/doctorpersnoldetails', upload.single('image'), async (req, res) => {
+//   try {
+//     const { body, file, verification } = req;
+//     console.log("body", body)
+//     const { email } = body.email
+//     const doctordetail = await doctordetails.find({ email });
+
+//     if (doctordetail.length > 0) {
+//       return res.status(200).json({ message: 'Doctor is already registered!' });
+//     }
+//     // Create a new doctordetails instance with the received data
+//     const newDoctorDetails = new pendingdoctors({
+//       image: file ? file.path : null, 
+//       image: verification ? verification.path : null, 
+//       name: body.name,
+//       email: body.email,
+//       password: body.password,
+//       specialization: body.specialization,
+//       conditionstreated: body.conditionstreated,
+//       aboutself: body.aboutself,
+//       education: body.education,
+//       college: body.college,
+//       license: body.license,
+//       yearofexperience: body.yearofexperience,
+//       country: body.country,
+//       state: body.state,
+//       once: {
+//         date: body['once.date'],
+//         timefrom: body['once.timefrom'],
+//         timetill: body['once.timetill'],
+//         consultationfees: body['once.consultationfees'],
+//       },
+//       daily: {
+//         datefrom: body['daily.datefrom'],
+//         datetill: body['daily.datetill'],
+//         timefrom: body['daily.timefrom'],
+//         timetill: body['daily.timetill'],
+//         consultationfees: body['daily.consultationfees'],
+//       },
+//       weekly: {
+//         day: body['weekly.day'],
+//         timefrom: body['weekly.timefrom'],
+//         timetill: body['weekly.timetill'],
+//         consultationfees: body['weekly.consultationfees'],
+//       },
+//     });
+
+//     // Save the data to the database
+//     await newDoctorDetails.save();
+//     res.status(200).json('Registration successful');
+//   } catch (error) {
+//     console.error('Error during registration:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+
+// });
 
 //new way to add images 
 // router.post('/doctorpersnoldetails', async (req, res) => {
